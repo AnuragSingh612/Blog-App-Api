@@ -1,5 +1,6 @@
 package com.example.Blog.App.Api.ServiceImpl;
 
+import com.example.Blog.App.Api.Entity.Post;
 import com.example.Blog.App.Api.payload.PostDto;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface postServiceInterface {
     PostDto getPostById(long id);
     PostDto updatepost(long id,PostDto postDto);
      void deletePost(long id);
+     List<PostDto> findpostbycategoryId(long id);
 }

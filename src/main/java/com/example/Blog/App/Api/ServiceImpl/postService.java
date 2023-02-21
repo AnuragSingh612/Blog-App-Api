@@ -1,7 +1,9 @@
 package com.example.Blog.App.Api.ServiceImpl;
+import com.example.Blog.App.Api.Entity.Category;
 import com.example.Blog.App.Api.Entity.Post;
 import com.example.Blog.App.Api.exception.ResourceNotfoundException;
 import com.example.Blog.App.Api.payload.PostDto;
+import com.example.Blog.App.Api.repository.CategoryRepository;
 import com.example.Blog.App.Api.repository.postRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,10 +20,14 @@ import java.util.stream.Collectors;
 public class postService implements postServiceInterface{
     @Autowired
     private postRepository postRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
     @Override
     public PostDto createPost(PostDto postDto) {
+        Category category =categoryRepository.findById(postDto.getCategoryId()).orElseThrow(()-> new ResourceNotfoundException("Category",postDto.getCategoryId(),"Id"));
         //Convert postDto to entity
         Post post=maptoEntity(postDto);
+        post.setCategory(category);
         //Saving post to Repository
         Post newPost= postRepository.save(post);
         //Convert entity to dto
@@ -43,13 +51,6 @@ public class postService implements postServiceInterface{
 
     @Override
     public PostDto updatepost(long id,PostDto postDto) {
-//        PostDto postDto1=getPostById(id);
-//        Post post=maptoEntity(postDto1);
-//        post.setContent(postDto1.getContent());
-//        post.setTitle(postDto1.getTitle());
-//        post.setDescription(postDto1.getDescription());
-////       Post updatePost= postRepository.save(post);
-//        return maptoDTO(post);
         Post post= postRepository.findById(id).orElseThrow(() -> new ResourceNotfoundException("Post",id,"id"));
         post.setTitle(postDto.getTitle());
         post.setDescription(postDto.getDescription());
@@ -77,5 +78,11 @@ public class postService implements postServiceInterface{
     }
     public void deletePost(long id){
       postRepository.deleteById(id);
+    }
+    @Override
+    public List<PostDto> findpostbycategoryId(long id) {
+        Category category=categoryRepository.findById(id).orElseThrow(()-> new ResourceNotfoundException("Category",id,"id"));
+        List<Post> postbycategoryId= postRepository.findPostByCategoryId(id);
+        return postbycategoryId.stream().map((post)->maptoDTO(post)).collect(Collectors.toList());
     }
 }

@@ -11,4 +11,5 @@ public class PostDto {
     private String title;
     private String description;
     private String content;
+    private Long categoryId;
 }

@@ -22,5 +22,10 @@ public class Post {
     private String description;
     @Column(name="content",nullable = false)
     private String content;
-
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="category_id")
+    Category category;
 }
+//Well, here we have specified fetch type Lazy.
+//It means whenever we load Post JPA entity, then the Category object won't load immediately.
+//All right, we can get this Category object from Post entity object on demand just by calling the getter
