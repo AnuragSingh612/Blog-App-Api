@@ -17,7 +17,7 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
     String name;
     String description;
     @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true)

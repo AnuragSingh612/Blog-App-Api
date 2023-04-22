@@ -1,9 +1,12 @@
 package com.example.Blog.App.Api.payload;
 
+import com.example.Blog.App.Api.Entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.function.Function;
 
 @Getter
 @Setter
@@ -11,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class CategoryDto {
-    Long id;
+    Integer id;
     String name;
     String Description;
 }

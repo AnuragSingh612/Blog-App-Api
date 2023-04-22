@@ -1,9 +1,9 @@
 package com.example.Blog.App.Api.repository;
 
-import com.example.Blog.App.Api.Entity.Category;
+import com.example.Blog.App.Api.Entity.Meetings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin("http://localhost:4200")
-public interface CategoryRepository extends JpaRepository<Category,Integer> {
+public interface MeetingsRepo extends JpaRepository<Meetings,Integer> {
 }

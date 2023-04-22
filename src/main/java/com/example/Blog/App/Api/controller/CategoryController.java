@@ -20,5 +20,12 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.addCategory(categoryDto), HttpStatus.CREATED);
     }
     /* @RequestBody will accept json from request and convert it into java object*/
-
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDto> getCategory(@PathVariable Integer id){
+        return new ResponseEntity<>(categoryService.getCategory(id),HttpStatus.OK);
+    }
+    @GetMapping
+    public ResponseEntity<List<CategoryDto>> getAllCategory(){
+        return new ResponseEntity<>(categoryService.getAllCategory(),HttpStatus.OK);
+    }
 }
