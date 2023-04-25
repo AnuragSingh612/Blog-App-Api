@@ -24,9 +24,6 @@ public class MeetingsService {
     @Autowired
     MeetingsRepo meetingsRepo;
 
-    public MeetingsService(MeetingsRepo meetingsRepo) {
-        this.meetingsRepo = meetingsRepo;
-    }
 
     @Autowired
     ModelMapper modelMapper;
@@ -106,6 +103,8 @@ public class MeetingsService {
         meet.setMeetingLink(meetDto.getMeetingLink());
         meet.setMeetingDate(meetDto.getMeetingDate());
         meet.setMeetingTime(meetDto.getMeetingTime());
+        meet.setMeetingType(meetDto.getMeetingType());
+        meet.setUpdatedOn(LocalDateTime.now());
         System.out.println(meet.getMeetingLink());
         meetingsRepo.save(meet);
         return modelMapper.map(meet,meetingDto.class);
