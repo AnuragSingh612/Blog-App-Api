@@ -13,7 +13,7 @@ public class meetingDto {
     private Integer Id;
     private String meetingLink;
     private LocalDateTime meetingDate;
-    private LocalDateTime meetingTime;
+    private LocalTime meetingTime;
     private Integer sprintId;
     private Integer meeting_platform_id;
     private String meetingType;

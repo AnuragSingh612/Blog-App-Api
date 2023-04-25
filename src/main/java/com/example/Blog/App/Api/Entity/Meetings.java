@@ -22,7 +22,7 @@ public class Meetings {
     private Integer Id;
     private String meetingLink;
     private LocalDateTime meetingDate;
-    private LocalDateTime meetingTime;
+    private LocalTime meetingTime;
     @Pattern(regexp= "^(DailyScrum|SprintPlanning|SprintReview|SprintRetrospective)$", message = "Invalid meeting type")
     private String meetingType;
     @ManyToOne(fetch=FetchType.LAZY)
