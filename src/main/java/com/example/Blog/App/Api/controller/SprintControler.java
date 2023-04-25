@@ -17,9 +17,8 @@ public class SprintControler {
     SprintService sprintService;
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/new")
-    public String addSprint(@RequestBody SprintDto sprintDto){
-        sprintService.addASprint(sprintDto);
-        return "The sprint name is"+ sprintDto.getSprintName();
+    public ResponseEntity<SprintDto> addSprint(@RequestBody SprintDto sprintDto){
+        return new ResponseEntity<>(sprintService.addASprint(sprintDto),HttpStatus.OK);
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping

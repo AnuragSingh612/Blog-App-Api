@@ -31,47 +31,67 @@ public class MeetingsService {
     SprintRepo sprintRepo;
     @Autowired
     MeetingPlatformRepo meetingPlatformsRepo;
-    public void createAmeeting(meetingDto meetingDto){
 
-        String meetingType=meetingDto.getMeetingType();
-        Sprints s = sprintRepo.findById(meetingDto.getSprintId()).orElseThrow(()-> new  ResourceNotfoundException("Sprint",meetingDto.getSprintId(),"ID"));
-        MeetingPlatforms meetingPlatforms=meetingPlatformsRepo.findById(meetingDto.getMeeting_platform_id()).orElseThrow(()-> new  ResourceNotfoundException("Meeting Platfor",meetingDto.getMeeting_platform_id(),"Id"));
+    public meetingDto createAmeeting(meetingDto meetDto){
+
+        String meetingType=meetDto.getMeetingType();
+        Sprints s = sprintRepo.findById(meetDto.getSprintId()).orElseThrow(()-> new  ResourceNotfoundException("Sprint",meetDto.getSprintId(),"ID"));
+        MeetingPlatforms meetingPlatforms=meetingPlatformsRepo.findById(meetDto.getMeeting_platform_id()).orElseThrow(()-> new  ResourceNotfoundException("Meeting Platfor",meetDto.getMeeting_platform_id(),"Id"));
         if(meetingType.equals("DailyScrum")){
             LocalDateTime startDate=s.getStartDate();
             LocalDateTime endDate=s.getEndDate();
             List<Meetings> meetingsList = new ArrayList<>(); // it is populated now
             for (LocalDateTime date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
                 Meetings meeting = new Meetings();
-                meeting.setMeetingLink(meetingDto.getMeetingLink());
-                meeting.setMeetingPassword(meetingDto.getMeetingPassword());
+                meeting.setMeetingLink(meetDto.getMeetingLink());
+                meeting.setMeetingPassword(meetDto.getMeetingPassword());
                 meeting.setMeetingType(meetingType);
                 meeting.setCreatedOn(LocalDateTime.now());
-                meeting.setMeetingTime(meetingDto.getMeetingTime());
+                meeting.setMeetingTime(meetDto.getMeetingTime());
                 meeting.setSprint(s);
                 meeting.setMeetingPlatforms(meetingPlatforms);
                 meeting.setUpdatedOn(LocalDateTime.now());
-                meeting.setStatus(meetingDto.getStatus());
+                meeting.setStatus(meetDto.getStatus());
                 meetingsList.add(meeting);
             }
             meetingsRepo.saveAll(meetingsList);
+            return new meetingDto();
         }
         else if(meetingType.equals("SprintPlanning")) {
-            Meetings meeting= modelMapper.map(meetingDto,Meetings.class);
+            Meetings meeting= modelMapper.map(meetDto,Meetings.class);
             meeting.setMeetingDate(s.getStartDate());
             meeting.setMeetingPlatforms(meetingPlatforms);
             meeting.setUpdatedOn(LocalDateTime.now());
             meetingsRepo.save(meeting);
+            modelMapper.map(meeting, meetingDto.class);
+            meetDto.setSprintId(s.getSprintId());
+            meetDto.setMeeting_platform_id(meetingPlatforms.getId());
+            meetDto.setUpdatedOn(LocalDateTime.now());
+            meetDto.setId(meeting.getId());
+            return meetDto;
         } else if (meetingType.equals("SprintRetrospective")) {
-            Meetings meeting= modelMapper.map(meetingDto,Meetings.class);
+            Meetings meeting= modelMapper.map(meetDto,Meetings.class);
             meeting.setMeetingDate(s.getEndDate());
             meeting.setMeetingPlatforms(meetingPlatforms);
             meeting.setUpdatedOn(LocalDateTime.now());
             meetingsRepo.save(meeting);
+            modelMapper.map(meeting, meetingDto.class);
+            meetDto.setSprintId(s.getSprintId());
+            meetDto.setMeeting_platform_id(meetingPlatforms.getId());
+            meetDto.setUpdatedOn(LocalDateTime.now());
+            meetDto.setId(meeting.getId());
+            return meetDto;
         } else {
-            Meetings meeting= modelMapper.map(meetingDto,Meetings.class);
+            Meetings meeting= modelMapper.map(meetDto,Meetings.class);
             meeting.setMeetingPlatforms(meetingPlatforms);
             meeting.setUpdatedOn(LocalDateTime.now());
             meetingsRepo.save(meeting);
+            modelMapper.map(meeting, meetingDto.class);
+            meetDto.setSprintId(s.getSprintId());
+            meetDto.setMeeting_platform_id(meetingPlatforms.getId());
+            meetDto.setUpdatedOn(LocalDateTime.now());
+            meetDto.setId(meeting.getId());
+            return meetDto;
         }
     }
 
@@ -80,21 +100,21 @@ public class MeetingsService {
         return modelMapper.map(meetings,meetingDto.class);
     }
 
-
-    public void reschedule(Integer id, meetingDto meetingDto) throws MeetingStatusUpdateFailedException {
-        Meetings meeting = meetingsRepo.findById(id).orElseThrow(()-> new  ResourceNotfoundException("Category",id,"ID"));
-        if(meeting.getMeetingDate().isBefore(LocalDateTime.now())) {
-            throw new MeetingStatusUpdateFailedException(meeting.getMeetingLink());
-        }
-        meeting.setMeetingDate(meetingDto.getMeetingDate());
-        meeting.setMeetingTime(meetingDto.getMeetingTime());
-        meeting.setStatus(meetingDto.getStatus());
-        meetingsRepo.save(meeting);
-    }
-
     public meetingDto getmeetingbyid(Integer id) {
         Meetings meet=meetingsRepo.findById(id).orElseThrow(()-> new  ResourceNotfoundException("Category",id,"ID"));
-        return modelMapper.map(meet, meetingDto.class);
+        meetingDto m= new meetingDto();
+        m.setStatus(meet.getStatus());
+        m.setMeetingTime(meet.getMeetingTime());
+        m.setId(meet.getId());
+        m.setMeetingDate(meet.getMeetingDate());
+        m.setMeetingLink(meet.getMeetingLink());
+        m.setMeetingType(meet.getMeetingType());
+        m.setMeetingPassword(meet.getMeetingPassword());
+        m.setMeeting_platform_id(meet.getMeetingPlatforms().getId());
+        m.setSprintId(meet.getSprint().getSprintId());
+        m.setUpdatedOn(meet.getUpdatedOn());
+        m.setCreatedOn(meet.getCreatedOn());
+        return m;
     }
 
     public meetingDto updatepost(Integer id, meetingDto meetDto) {
@@ -107,6 +127,8 @@ public class MeetingsService {
         meet.setUpdatedOn(LocalDateTime.now());
         System.out.println(meet.getMeetingLink());
         meetingsRepo.save(meet);
-        return modelMapper.map(meet,meetingDto.class);
+        modelMapper.map(meet,meetingDto.class);
+        meetDto.setMeeting_platform_id(meet.getMeetingPlatforms().getId());
+        return meetDto;
     }
 }

@@ -16,14 +16,8 @@ public class MeetingController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.OK)
-    public void createAmeeting(@RequestBody meetingDto meetingDto){
-        meetingsService.createAmeeting(meetingDto);
-    }
-    @CrossOrigin(origins = "http://localhost:4200")
-    @PutMapping("/{id}/reschedule")
-    @ResponseStatus(HttpStatus.OK)
-    public void reschedule(@PathVariable(name="id") Integer id,@RequestBody meetingDto meetingDto1) throws RuntimeException {
-        meetingsService.reschedule(id,meetingDto1);
+    public ResponseEntity<meetingDto> createAmeeting(@RequestBody meetingDto meetingDto){
+        return new ResponseEntity<>(meetingsService.createAmeeting(meetingDto),HttpStatus.OK);
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{id}")
@@ -32,6 +26,7 @@ public class MeetingController {
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @PatchMapping("/update/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<meetingDto> updatePost(@PathVariable(name="id") Integer id,@RequestBody meetingDto postDto)
     {
         return new ResponseEntity<>(meetingsService.updatepost(id,postDto),HttpStatus.OK);
