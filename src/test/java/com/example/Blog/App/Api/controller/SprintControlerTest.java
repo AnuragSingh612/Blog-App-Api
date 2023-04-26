@@ -1,5 +1,6 @@
 package com.example.Blog.App.Api.controller;
 
+import com.example.Blog.App.Api.Response.SprintNameResponse;
 import com.example.Blog.App.Api.ServiceImpl.SprintService;
 import com.example.Blog.App.Api.payload.SprintDto;
 import org.junit.jupiter.api.Test;
@@ -43,5 +44,23 @@ class SprintControlerTest {
         // verify the response
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(sprintDtoList, responseEntity.getBody());
+    }
+    @Test
+    void testAddSprint() {
+        // Arrange
+        SprintDto sprintDto = new SprintDto();
+        // Set properties of sprintDto as needed
+
+        SprintNameResponse expectedResponse = new SprintNameResponse();
+        // Set properties of expectedResponse as needed
+
+        when(sprintService.addASprint(sprintDto)).thenReturn(expectedResponse);
+
+        // Act
+        ResponseEntity<SprintNameResponse> responseEntity = sprintController.addSprint(sprintDto);
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedResponse, responseEntity.getBody());
     }
 }

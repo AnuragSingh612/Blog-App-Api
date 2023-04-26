@@ -1,5 +1,7 @@
 package com.example.Blog.App.Api.controller;
 
+import com.example.Blog.App.Api.Entity.MeetingPlatforms;
+import com.example.Blog.App.Api.Response.MeetingResponse;
 import com.example.Blog.App.Api.Response.ScheduledResponse;
 import com.example.Blog.App.Api.ServiceImpl.MeetingsService;
 import com.example.Blog.App.Api.payload.meetingDto;
@@ -9,13 +11,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class MeetingControllerTest {
     @Mock
@@ -23,7 +29,8 @@ class MeetingControllerTest {
 
     @InjectMocks
     MeetingController meetingController;
-
+ModelMapper mapper;
+MeetingPlatforms meetingPlatforms;
     @BeforeEach
     void setUp() {
 
@@ -40,28 +47,34 @@ class MeetingControllerTest {
     @Test
     void testCreateAmeeting() {
         // Arrange
-        meetingDto meetingDto = new meetingDto(/* set meetingDto properties */);
+        MeetingResponse expectedResponse = new MeetingResponse("Meeting created successfully");
+        meetingDto inputMeetingDto = new meetingDto();
+        doReturn(expectedResponse).when(meetingsService).createAmeeting(inputMeetingDto);
 
         // Act
-        meetingController.createAmeeting(meetingDto);
+        ResponseEntity<MeetingResponse> responseEntity = meetingController.createAmeeting(inputMeetingDto);
 
         // Assert
-        verify(meetingsService).createAmeeting(meetingDto);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedResponse, responseEntity.getBody());
     }
     @Test
     void testUpdatePost() {
-        // Arrange
         Integer id = 1;
-        meetingDto meetingDto = new meetingDto(/* set meetingDto properties */);
-        ScheduledResponse sr= new ScheduledResponse("success");
-        when(meetingsService.updatepost(id, meetingDto)).thenReturn(sr);
+        meetingDto postDto = new meetingDto();
+        postDto.setId(id);
+        // Set other properties of postDto as needed
+
+        ScheduledResponse expectedResponse = new ScheduledResponse("Test");
+        // Set properties of expectedResponse as needed
+
+        when(meetingsService.updatepost(id, postDto)).thenReturn(expectedResponse);
 
         // Act
-        ResponseEntity<ScheduledResponse> responseEntity = meetingController.updatePost(id, meetingDto);
+        ResponseEntity<ScheduledResponse> responseEntity = meetingController.updatePost(id, postDto);
 
         // Assert
-        verify(meetingsService).updatepost(id, meetingDto);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(meetingDto, responseEntity.getBody());
+        assertEquals(expectedResponse, responseEntity.getBody());
     }
 }

@@ -102,10 +102,10 @@ public class MeetingsService {
         }
     }
 
-    public meetingDto getMetingbyId(Integer id){
-        Meetings meetings=meetingsRepo.findById(id).orElseThrow(()-> new  ResourceNotfoundException("Category",id,"ID"));
-        return modelMapper.map(meetings,meetingDto.class);
-    }
+//    public meetingDto getMetingbyId(Integer id){
+//        Meetings meetings=meetingsRepo.findById(id).orElseThrow(()-> new  ResourceNotfoundException("Category",id,"ID"));
+//        return modelMapper.map(meetings,meetingDto.class);
+//    }
 
     public MeetingsService(MeetingsRepo meetingsRepo,ModelMapper modelMapper,MeetingPlatformRepo meetingPlatformsRepo) {
         this.meetingsRepo = meetingsRepo;
@@ -141,7 +141,7 @@ public class MeetingsService {
         System.out.println(meet.getMeetingLink());
         meetingsRepo.save(meet);
         modelMapper.map(meet,meetingDto.class);
-        meetDto.setMeeting_platform_id(meet.getMeetingPlatforms().getId());
+       // meetDto.setMeeting_platform_id(meet.getMeetingPlatforms().getId());
         ScheduledResponse sr= new ScheduledResponse("Meeting details are updated!");
         return sr;
     }
