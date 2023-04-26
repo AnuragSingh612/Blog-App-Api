@@ -1,5 +1,6 @@
 package com.example.Blog.App.Api.controller;
 
+import com.example.Blog.App.Api.Response.ScheduledResponse;
 import com.example.Blog.App.Api.ServiceImpl.MeetingsService;
 import com.example.Blog.App.Api.payload.meetingDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,10 +53,11 @@ class MeetingControllerTest {
         // Arrange
         Integer id = 1;
         meetingDto meetingDto = new meetingDto(/* set meetingDto properties */);
-        when(meetingsService.updatepost(id, meetingDto)).thenReturn(meetingDto);
+        ScheduledResponse sr= new ScheduledResponse("success");
+        when(meetingsService.updatepost(id, meetingDto)).thenReturn(sr);
 
         // Act
-        ResponseEntity<meetingDto> responseEntity = meetingController.updatePost(id, meetingDto);
+        ResponseEntity<ScheduledResponse> responseEntity = meetingController.updatePost(id, meetingDto);
 
         // Assert
         verify(meetingsService).updatepost(id, meetingDto);

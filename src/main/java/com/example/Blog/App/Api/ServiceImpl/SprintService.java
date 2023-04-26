@@ -1,5 +1,6 @@
 package com.example.Blog.App.Api.ServiceImpl;
 import com.example.Blog.App.Api.Entity.Sprints;
+import com.example.Blog.App.Api.Response.SprintNameResposne;
 import com.example.Blog.App.Api.payload.SprintDto;
 import com.example.Blog.App.Api.repository.SprintRepo;
 import org.modelmapper.ModelMapper;
@@ -20,14 +21,15 @@ public class SprintService {
     SprintRepo sprintRepo;
     @Autowired
     ModelMapper modelMapper;
-    public SprintDto addASprint(SprintDto sprintDto){
+    public SprintNameResposne addASprint(SprintDto sprintDto){
         Sprints sprint1=modelMapper.map(sprintDto, Sprints.class);
         Sprints sprints2=sprintRepo.save(sprint1);
         modelMapper.map(sprints2,SprintDto.class);
         sprintDto.setSprintId(sprints2.getSprintId());
         sprintDto.setCreatedOn(LocalDateTime.now());
         sprintDto.setSprintName(sprints2.getSprintName());
-        return sprintDto;
+        SprintNameResposne snr= new SprintNameResposne("Sprint with sprint name "+sprints2.getSprintName()+" is created!");
+        return snr;
     }
 
     public List<SprintDto> getallSprint() {

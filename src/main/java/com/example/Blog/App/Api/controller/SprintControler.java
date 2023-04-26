@@ -1,5 +1,6 @@
 package com.example.Blog.App.Api.controller;
 
+import com.example.Blog.App.Api.Response.SprintNameResposne;
 import com.example.Blog.App.Api.ServiceImpl.SprintService;
 import com.example.Blog.App.Api.payload.SprintDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class SprintControler {
     SprintService sprintService;
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/new")
-    public ResponseEntity<SprintDto> addSprint(@RequestBody SprintDto sprintDto){
+    public ResponseEntity<SprintNameResposne> addSprint(@RequestBody SprintDto sprintDto){
         return new ResponseEntity<>(sprintService.addASprint(sprintDto),HttpStatus.OK);
     }
     @CrossOrigin(origins = "http://localhost:4200")

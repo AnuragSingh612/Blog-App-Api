@@ -3,6 +3,8 @@ package com.example.Blog.App.Api.ServiceImpl;
 import com.example.Blog.App.Api.Entity.MeetingPlatforms;
 import com.example.Blog.App.Api.Entity.Meetings;
 import com.example.Blog.App.Api.Entity.Sprints;
+import com.example.Blog.App.Api.Response.MeetingResponse;
+import com.example.Blog.App.Api.Response.ScheduledResponse;
 import com.example.Blog.App.Api.exception.ResourceNotfoundException;
 import com.example.Blog.App.Api.payload.meetingDto;
 import com.example.Blog.App.Api.repository.MeetingPlatformRepo;
@@ -29,7 +31,7 @@ public class MeetingsService {
     @Autowired
     MeetingPlatformRepo meetingPlatformsRepo;
 
-    public meetingDto createAmeeting(meetingDto meetDto){
+    public MeetingResponse createAmeeting(meetingDto meetDto){
 
         String meetingType=meetDto.getMeetingType();
         Sprints s = sprintRepo.findById(meetDto.getSprintId()).orElseThrow(()-> new  ResourceNotfoundException("Sprint",meetDto.getSprintId(),"ID"));
@@ -52,7 +54,9 @@ public class MeetingsService {
                 meetingsList.add(meeting);
             }
             meetingsRepo.saveAll(meetingsList);
-            return new meetingDto();
+            MeetingResponse mres= new MeetingResponse();
+            mres.setMeetingResponse("All meetings are successfully created for Daily Scrum");
+            return mres;
         }
         else if(meetingType.equals("SprintPlanning")) {
             Meetings meeting= modelMapper.map(meetDto,Meetings.class);
@@ -65,7 +69,9 @@ public class MeetingsService {
             meetDto.setMeeting_platform_id(meetingPlatforms.getId());
             meetDto.setUpdatedOn(LocalDateTime.now());
             meetDto.setId(meeting.getId());
-            return meetDto;
+            MeetingResponse mres= new MeetingResponse();
+            mres.setMeetingResponse("Meeting successfully created! for Sprint Planning");
+            return mres;
         } else if (meetingType.equals("SprintRetrospective")) {
             Meetings meeting= modelMapper.map(meetDto,Meetings.class);
             meeting.setMeetingDate(s.getEndDate());
@@ -77,7 +83,9 @@ public class MeetingsService {
             meetDto.setMeeting_platform_id(meetingPlatforms.getId());
             meetDto.setUpdatedOn(LocalDateTime.now());
             meetDto.setId(meeting.getId());
-            return meetDto;
+            MeetingResponse mres= new MeetingResponse();
+            mres.setMeetingResponse("Meeting successfully created! for Sprint Retrospective");
+            return mres;
         } else {
             Meetings meeting= modelMapper.map(meetDto,Meetings.class);
             meeting.setMeetingPlatforms(meetingPlatforms);
@@ -88,7 +96,9 @@ public class MeetingsService {
             meetDto.setMeeting_platform_id(meetingPlatforms.getId());
             meetDto.setUpdatedOn(LocalDateTime.now());
             meetDto.setId(meeting.getId());
-            return meetDto;
+            MeetingResponse mres= new MeetingResponse();
+            mres.setMeetingResponse("Meeting successfully created! for Sprint Review");
+            return mres;
         }
     }
 
@@ -120,7 +130,7 @@ public class MeetingsService {
         return m;
     }
 
-    public meetingDto updatepost(Integer id, meetingDto meetDto) {
+    public ScheduledResponse updatepost(Integer id, meetingDto meetDto) {
         Meetings meet=meetingsRepo.findById(id).orElseThrow(()-> new  ResourceNotfoundException("Category",id,"ID"));
         meet.setId(id);
         meet.setMeetingLink(meetDto.getMeetingLink());
@@ -132,6 +142,7 @@ public class MeetingsService {
         meetingsRepo.save(meet);
         modelMapper.map(meet,meetingDto.class);
         meetDto.setMeeting_platform_id(meet.getMeetingPlatforms().getId());
-        return meetDto;
+        ScheduledResponse sr= new ScheduledResponse("Meeting details are updated!");
+        return sr;
     }
 }

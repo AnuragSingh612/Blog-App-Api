@@ -1,5 +1,7 @@
 package com.example.Blog.App.Api.controller;
 
+import com.example.Blog.App.Api.Response.MeetingResponse;
+import com.example.Blog.App.Api.Response.ScheduledResponse;
 import com.example.Blog.App.Api.ServiceImpl.MeetingsService;
 import com.example.Blog.App.Api.payload.meetingDto;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -16,7 +18,7 @@ public class MeetingController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<meetingDto> createAmeeting(@RequestBody meetingDto meetingDto){
+    public ResponseEntity<MeetingResponse> createAmeeting(@RequestBody meetingDto meetingDto){
         return new ResponseEntity<>(meetingsService.createAmeeting(meetingDto),HttpStatus.OK);
     }
     @CrossOrigin(origins = "http://localhost:4200")
@@ -27,7 +29,7 @@ public class MeetingController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PatchMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<meetingDto> updatePost(@PathVariable(name="id") Integer id,@RequestBody meetingDto postDto)
+    public ResponseEntity<ScheduledResponse> updatePost(@PathVariable(name="id") Integer id, @RequestBody meetingDto postDto)
     {
         return new ResponseEntity<>(meetingsService.updatepost(id,postDto),HttpStatus.OK);
     }
