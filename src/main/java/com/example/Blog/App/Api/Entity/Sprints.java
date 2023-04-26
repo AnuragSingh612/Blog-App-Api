@@ -30,7 +30,7 @@ public class Sprints {
 @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDateTime endDate;
 
-    private String projectCode;
+    private Integer projectCode;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDate createdOn=LocalDate.now();
     @AssertTrue(message = "End date must be after start date")

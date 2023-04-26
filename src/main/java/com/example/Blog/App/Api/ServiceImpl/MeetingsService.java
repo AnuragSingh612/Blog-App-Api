@@ -1,12 +1,9 @@
 package com.example.Blog.App.Api.ServiceImpl;
 
-import com.example.Blog.App.Api.Entity.Category;
 import com.example.Blog.App.Api.Entity.MeetingPlatforms;
 import com.example.Blog.App.Api.Entity.Meetings;
 import com.example.Blog.App.Api.Entity.Sprints;
-import com.example.Blog.App.Api.exception.MeetingStatusUpdateFailedException;
 import com.example.Blog.App.Api.exception.ResourceNotfoundException;
-import com.example.Blog.App.Api.payload.CategoryDto;
 import com.example.Blog.App.Api.payload.meetingDto;
 import com.example.Blog.App.Api.repository.MeetingPlatformRepo;
 import com.example.Blog.App.Api.repository.MeetingsRepo;

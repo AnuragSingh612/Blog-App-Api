@@ -18,7 +18,7 @@ public class SprintDto {
     private String sprintName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String projectCode;
+    private Integer projectCode;
     private LocalDateTime createdOn=LocalDateTime.now();
 
 }
