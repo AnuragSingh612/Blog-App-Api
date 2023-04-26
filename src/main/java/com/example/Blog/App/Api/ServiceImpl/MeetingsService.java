@@ -100,6 +100,12 @@ public class MeetingsService {
         return modelMapper.map(meetings,meetingDto.class);
     }
 
+    public MeetingsService(MeetingsRepo meetingsRepo,ModelMapper modelMapper,MeetingPlatformRepo meetingPlatformsRepo) {
+        this.meetingsRepo = meetingsRepo;
+        this.modelMapper=modelMapper;
+        this.meetingPlatformsRepo=meetingPlatformsRepo;
+    }
+
     public meetingDto getmeetingbyid(Integer id) {
         Meetings meet=meetingsRepo.findById(id).orElseThrow(()-> new  ResourceNotfoundException("Category",id,"ID"));
         meetingDto m= new meetingDto();

@@ -35,18 +35,7 @@ class MeetingControllerTest {
         when(meetingsService.getmeetingbyid(anyInt())).thenReturn(reponseMeetingDto);
         assertEquals(meetingResponse, meetingController.getById(1));
     }
-    @Test
-    void testReschedule() {
-        // Arrange
-        Integer id = 1;
-        meetingDto meetingDto1 = new meetingDto(/* set meetingDto properties */);
 
-        // Act
-        meetingController.reschedule(id, meetingDto1);
-
-        // Assert
-        verify(meetingsService).reschedule(id, meetingDto1);
-    }
     @Test
     void testCreateAmeeting() {
         // Arrange

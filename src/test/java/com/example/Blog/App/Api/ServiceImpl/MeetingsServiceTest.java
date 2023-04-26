@@ -8,6 +8,8 @@ import com.example.Blog.App.Api.payload.meetingDto;
 import com.example.Blog.App.Api.repository.MeetingPlatformRepo;
 import com.example.Blog.App.Api.repository.MeetingsRepo;
 import com.example.Blog.App.Api.repository.SprintRepo;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,22 +28,22 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 class MeetingsServiceTest {
 //
 //    SprintRepo sprintRepo = Mockito.mock(SprintRepo.class);
 //
-//    @Mock
-//    MeetingPlatformRepo meetingPlatformsRepo;
+    @Mock
+    MeetingPlatformRepo meetingPlatformsRepo;
 //
-//    @Mock
-//    MeetingsRepo meetingsRepo;
+    @Mock
+    MeetingsRepo meetingsRepo;
 //
-//    @Mock
-//    ModelMapper modelMapper;
+    @Mock
+    ModelMapper modelMapper;
 //
-//    @InjectMocks
-//    MeetingsService meetingsService;
+
+    MeetingsService meetingsService;
 //
 //
 //
@@ -81,5 +83,29 @@ class MeetingsServiceTest {
 //        verify(sprintRepo).findById(1);
 //        verify(meetingPlatformsRepo).findById(1);
 //        verify(meetingsRepo).saveAll(meetingsList);
+
+    @BeforeEach
+    void setUp() {
+        this.meetingsService= new MeetingsService(this.meetingsRepo,this.modelMapper,this.meetingPlatformsRepo);
+    }
+
+    @Test
+    void testGetMeetingById() {
+        // Arrange
+        Integer id = 1;
+        Meetings meeting = new Meetings();
+        meeting.setId(id);
+        meeting.setMeetingType("SprintReview");
+        when(meetingsRepo.findById(id)).thenReturn(Optional.of(meeting));
+
+        // Act
+        meetingDto result = meetingsService.getMetingbyId(id);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(id, result.getId());
+        assertEquals("SprintReview", result.getMeetingType());
+    }
+
 
 }

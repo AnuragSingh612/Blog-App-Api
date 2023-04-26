@@ -24,4 +24,8 @@ public class MeetingPlatformService {
         return meetingsPlatformList.stream().map(meetings -> modelMapper.map(meetings, meetingplatformDto.class)).collect(Collectors.toList());
     }
 
+    public MeetingPlatformService(MeetingPlatformRepo meetingPlatformRepo, ModelMapper modelMapper) {
+        this.meetingPlatformRepo = meetingPlatformRepo;
+        this.modelMapper = modelMapper;
+    }
 }
