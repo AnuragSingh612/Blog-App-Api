@@ -109,7 +109,7 @@ private SprintRepo sprintRepo;
         when(modelMapper.map(meeting, meetingDto.class)).thenReturn(expectedDto);
 
         // Act
-        meetingDto result = meetingsService.getMetingbyId(id);
+        meetingDto result = meetingsService.getmeetingbyid(id);
 
         // Assert
         assertEquals(expectedDto, result);
